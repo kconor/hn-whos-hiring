@@ -1,0 +1,40 @@
+<div>
+	<div id='wh-header'>
+		<div id='wh-header-left'>
+			<div>
+				<form id='wh-form'>
+					<label for='wh-text-input'>Search job posts: </label>
+					<br/>
+					<input type='text' id='wh-text-filter'></input>
+				</form>
+			</div>
+			<div style="clear:both">
+				<form>
+					<label for="wh-filter-by-status">Filter by status: </label>
+					<select id="wh-filter-by-status" name="filter-select">
+						<option value="all" selected>all</option> 
+						<option value="status">status not set</option> 
+						<option value="applied">applied</option>
+						<option value="todo">todo</option>
+						<option value="ignore">ignore</option>
+					</select>
+				</form>
+			</div>
+			<div style="clear:both">
+				<span id="wh-load-count"></span>
+			</div>
+		</div>
+		<div id='wh-header-right'>
+			<p>Who's Hiring - Extension Info</p>
+			<ol>
+				<li>Search is case-insensitive and uses "indexOf(...) > -1."</li>
+				<li>Queries are not trimmed, so "intern " will not match "internal."
+				<li>Click "+" to expand comment tree.</li>
+				<li>Click "status" to set the status your status for the post.  
+					<br/>This should persist across browser sessions.</li>
+				<li>If it's acting up, go to chrome://extensions and refresh</li>
+			</ol>
+		</div>
+	</div>
+			<br style="clear:both;"/>
+</div>

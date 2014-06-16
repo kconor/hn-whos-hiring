@@ -1,0 +1,12 @@
+{
+	"jshintConfig": {
+		"browser": "true",
+		"predef": [
+			"chrome",
+			"define",
+			"require",
+			"requirejs_config",
+			"Promise"
+		]
+	}
+}

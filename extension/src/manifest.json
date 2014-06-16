@@ -1,0 +1,36 @@
+{
+	"manifest_version": 2,
+
+	"name": "Hacker News - Who's Hiring",
+	"description": "Utility for filtering and tracking who's hiring posts on HN",
+	"version": "2.0",
+
+	"permissions": [
+		"storage",
+		"http://news.ycombinator.com/",
+		"https://news.ycombinator.com/",
+		"tabs",
+		"activeTab",
+		"unlimitedStorage",
+		"declarativeContent"
+	],
+	
+	//resources accesible to the page we're modifying
+	"web_accessible_resources": [
+		"js/*",
+		"html/*",
+		"css/*",
+		"images/*"
+	],
+
+	"background": {
+		"scripts": ["js/background.js"],
+		"persistent": false
+	},
+
+	"page_action": {
+		"default_icon": "img/icon.png",
+		//"default_popup": "html/popup.html",
+		"default_title": "Hacker News - Who's Hiring"
+	}
+}

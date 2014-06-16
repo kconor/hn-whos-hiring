@@ -1,0 +1,143 @@
+/* header css */
+#wh-header {
+	margin: 2em auto;
+	display: block;
+	width: 800px;
+}
+
+#wh-text-filter {
+	width: 250px;
+	margin: 1em 0 0 0;
+	font-size: 1em;
+}
+
+#wh-form {
+	float: left;
+	font-size: 1.5em;
+}
+
+#wh-header-left {
+	float: left;
+	width: 40%;
+}
+
+#wh-header-right {
+	float: left;
+	width: 55%;
+	margin-left: 5%;
+}
+
+#wh-load-count {
+	font-size: 1em;
+	margin-left: 1em;
+}
+
+/* comment css */
+.wh-comments-container {
+	background: white;
+	padding-top: 1px;
+}
+.wh-comment-tree-container {
+	margin: 0.5em 0;
+}
+.wh-comment-wrapper {
+	clear: both;
+	background: rgb(246,246,239);
+}
+
+.wh-comment {
+}
+
+.wh-comment-menu {
+	float: left;
+	width: 5em;
+	margin: 0 1em;
+}
+
+.wh-comment-container {
+	float: left;
+	width: 90%;
+}
+
+.wh-comment-content, 
+.wh-comment-header {
+	width: 100%;
+}
+
+.wh-spacer {
+	vertical-align: top;
+	min-width: 60;
+	text-align: center;
+}
+
+.parent-comment-small {
+	max-height: 7em;
+	overflow: hidden;
+	display: block;
+}
+
+.parent-comment-full {
+	max-height: none;
+	overflow: visible;
+}
+
+.wh-button {
+	cursor: pointer;
+	display: block;
+	position: relative;
+	margin: 2px;
+	padding: 2px;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 4px;
+	font-family: "Lato", Helvetica, Arial, sans-serif;
+}
+
+.apply {
+	background: lightgreen;
+}
+
+.applied {
+	background: lightblue;
+}
+
+.expand {
+	display: block;
+	font-size: 2.5em;
+}
+
+.wh-select-container {
+	overflow: hidden;
+	display: block;
+	border-radius: 8px;
+	width: 4.75em;
+}
+.wh-select {
+	border: none;
+	font-size: 1em;
+	margin-left: -1px;
+	width: 6em;
+}
+.wh-select.status {
+	background: lightgreen;
+}
+.wh-select.applied {
+	background: lightblue;
+}
+.wh-select.todo {
+	background:  yellow;
+}
+.wh-select.ignore {
+	background: red;
+}
+
+/* load more DEPRECATED*/
+#wh-load-more-btn {
+	margin: auto 2em;
+	font-size: 1.25em;
+	text-align: center;
+	background: orange;
+	clear: both;
+	cursor: pointer;
+	border-radius: 8px;
+}
