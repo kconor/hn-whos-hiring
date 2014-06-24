@@ -3,14 +3,12 @@
 
 define(["underscore",
 				"interface",
-				"load_more",
 				"logger",
 				"dom_util",
 				"buttons",
 				"text!/html/comment.html"], 
 function(_,
 					Interface,
-					load,
 					logger,
 					dom,
 					btn,
@@ -20,8 +18,6 @@ function(_,
 	var pub = new Interface();
 	
 	/* Construct new comment from old comment.
-	 *
-	 * TODO: mustache?
 	 *
 	 * @param {object} comment <tr> from hacker news
 	 *
@@ -105,58 +101,12 @@ function(_,
 	}
 	pub.export(getNewComments);
 
-	/*
-	 * Every time a new page of job posts is loaded, increment the 
-	 * counts underneath the form 
-	 *
-	 * @param {number} the total number of job posts (top-level comments)
-	 */
-	var count_RE = /[0-9]+/;
-	function incrLoadMoreCount(num_posts) {
-		var count_span = document.getElementById("wh-load-count");
-		if (count_span.innerText === "") {
-			count_span.innerText = "Loaded 1 page containing " + num_posts + " job posts.";
-		} else {
-			var match = count_RE.exec(count_span.innerText);
-			if (match !== null) {
-				var count = parseInt(match[0]);
-				count++;
-				count_span.innerText = "Loaded " + count + " pages containing " + num_posts + " job posts.";
-			} else {
-				count_span.innnerText = "";
-			}
-		}
-	}
-	pub.export(incrLoadMoreCount);
 
-	/*
-	 * Recursively follow "more" links and 
-	 * append comments to main page. 
-	 *
-	 * @param {object} a document in which to find the link
-	 */
-	function loadMoreComments(doc, href) {
-		var link = href || load.findMoreLink(doc);
-		if (link !== undefined) {
-			logger.log("loadMoreComments() - " + link);
-			load.downloadMoreLink(link).then(
-				function(response) {
-					var new_doc = load.htmlToDoc(response);
-					var new_com = getComments(new_doc);
-					var new_new_com = buildNewComments(new_com);
-					appendComments(new_new_com);
-					new_comments = new_comments.concat(new_new_com);
-					incrLoadMoreCount(new_comments.length);
-					//pasrse and add
-					loadMoreComments(new_doc);
-			},function(error) {
-				logger.log(error);
-			});
-		} else {
-			logger.log("loadMoreComments() - didn't find link");
-		}
+	function concatNewCommentsArray(comments) {
+		new_comments = new_comments.concat(comments);
 	}
-	pub.export(loadMoreComments);
+	pub.export(concatNewCommentsArray);
+
 
 	/*
 	 * Gets the table from the DOM that contains the post text
@@ -189,13 +139,13 @@ function(_,
 	 *
 	 * @param {object} array of new comments
 	 */
-	function appendComments(comments) {
+	function appendCommentsToDOM(comments) {
 		var new_frag = createCommentsDOMFragment(comments);
 		var all_frags = document.getElementsByClassName("wh-comments-container");
 		var last_frag = all_frags[all_frags.length - 1];
 		last_frag.parentElement.insertBefore(new_frag, last_frag.nextSibling);
 	}
-	pub.export(appendComments);
+	pub.export(appendCommentsToDOM);
 
 	/*
 	 * This avoid reflowing the page on each insert.

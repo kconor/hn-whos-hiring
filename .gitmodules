@@ -1,0 +1,3 @@
+[submodule "extension/submodules/lunr"]
+	path = extension/submodules/lunr
+	url = https://github.com/kconor/lunr.js

@@ -1,7 +1,15 @@
 /* jshint -W097 */
 "use strict";
-define(["underscore", "logger", "interface"], 
-function(_,            logger,   Interface) { 
+define(["underscore",
+				"logger",
+				"interface",
+				"comments",
+				"search"], 
+function(_,
+					logger,
+					Interface,
+					com,
+					search) { 
 
 	var pub = new Interface();
 	/* 
@@ -76,6 +84,61 @@ function(_,            logger,   Interface) {
 		});
 	}
 	pub.export(downloadMoreLink);
+
+
+	/*
+	 * Recursively follow "more" links and 
+	 * append comments to main page. 
+	 *
+	 * @param {object} a document in which to find the link
+	 */
+	function loadMoreComments(doc, href) {
+		var link = href || findMoreLink(doc);
+		if (link !== undefined) {
+			logger.log("loadMoreComments() - " + link);
+			downloadMoreLink(link).then(
+				function(response) {
+					var new_doc = htmlToDoc(response);
+					var new_com = com.getComments(new_doc);
+					var new_new_com = com.buildNewComments(new_com);
+					com.appendCommentsToDOM(new_new_com);
+					com.concatNewCommentsArray(new_new_com);
+					updateLoadMoreCount(com.getNewComments().length);
+					search.addToIndex(new_new_com);
+					loadMoreComments(new_doc);
+			},function(error) {
+				logger.log(error);
+			});
+		} else {
+			logger.log("loadMoreComments() - didn't find link");
+		}
+	}
+	pub.export(loadMoreComments);
+
+
+	/*
+	 * Every time a new page of job posts is loaded, increment the 
+	 * counts underneath the form 
+	 *
+	 * @param {number} the total number of job posts (top-level comments)
+	 */
+	var count_RE = /[0-9]+/;
+	function updateLoadMoreCount(num_posts) {
+		var count_span = document.getElementById("wh-load-count");
+		if (count_span.innerText === "") {
+			count_span.innerText = "Loaded 1 page containing " + num_posts + " job posts.";
+		} else {
+			var match = count_RE.exec(count_span.innerText);
+			if (match !== null) {
+				var count = parseInt(match[0]);
+				count++;
+				count_span.innerText = "Loaded " + count + " pages containing " + num_posts + " job posts.";
+			} else {
+				count_span.innnerText = "";
+			}
+		}
+	}
+	pub.export(updateLoadMoreCount);
 
 	return pub;
 });

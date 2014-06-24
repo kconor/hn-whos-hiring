@@ -5,16 +5,52 @@ define(["underscore",
 				"dom_util",
 				"comments",
 				"buttons",
+				"lunr",
+				"logger",
 				"text!/html/header.html"], 
 function( _, 
 					Interface,
 					dom,
 					com,
 					btn,
+					lunr,
+					logger,
 					header_html) { 
 
-	var pub = new Interface();
+	/*
+	 * Override tokenizer function to split on "/" as well.
+	 *
+	 * @param{String} the string to convert into tokens
+	 *
+	 * @returns{object} an array of tokens
+	 */
+	lunr.tokenizer = function(obj) {
+		if (!arguments.length || obj === null || obj === undefined)
+			return [];
+		if (Array.isArray(obj)) {
+			return obj.map(function (t) { 
+				return t.toLowerCase(); 
+			});
+		}
 
+		var str = obj.toString().trim();
+		
+		return str
+			.split(/\s+/)
+			.map(function(token) {
+				return token.split("/");
+			})
+			.reduce(function(prev, curr) {
+				return prev.concat(curr);
+			}, [])
+			.map(function(token) {
+				return token.toLowerCase();
+			});
+	};
+
+
+
+	var pub = new Interface();
 
 	/* 
 	 * Search function.  Iterates over comments
@@ -27,9 +63,9 @@ function( _,
 	 * @returns {number} # satisfying predicate
 	 */
 	function search(predicate) {
-		var visible = 0;
 		var comments = com.getNewComments();
-		_.each(comments, function(c, i, ls) {
+		var visible = 0;
+		_.each(comments, function(c) {
 			if (predicate(c)) {
 				dom.show(c);
 				visible++;
@@ -40,6 +76,7 @@ function( _,
 		});
 		return visible;
 	}
+
 
 	/* 
 	 * Generate an event listener that shows or hides
@@ -55,22 +92,33 @@ function( _,
 		function listener(e) {
 			try {
 				var query = filter.value.toLowerCase();
+				var query_results = index.search(query);
+				query_results = _.sortBy(query_results, function(id) {
+					return parseInt(id.ref);
+				});
 				var selected = status_select.selectedOptions[0].value;
 				var status_num = btn.selectIndex(selected);
 
+				var id = 0;
 				var found = search(function(comment) {
 					var comment_status = com.getStatus(comment);
-					//status_num === -1 => view all statuses
 					if (status_num === -1 || comment_status === status_num) {
-						if (filter.value === "") {
+						if  (query === "") {
+							return true;
+						} else if (query_results && 
+												id < query_results.length && 
+												comment.search_id == query_results[id].ref)
+						{
+							id++;
 							return true;
 						} else {
-							return comment.innerText.toLowerCase().indexOf(query) > -1;
+							return false;
 						}
 					} else {
 						return false;
 					}
 				});
+				logger.log("search() results: " + found);
 			} catch (ex) {
 				throw ex;
 			} finally {
@@ -98,6 +146,32 @@ function( _,
 		}
 	}
 	pub.export(addForm);
+
+	var index;
+	var max_doc_id = 0;
+
+	function createIndex(comments) {
+		index = lunr(function() {
+			this.field("body");
+			this.field("id");
+		});
+
+		if (comments !== undefined) {
+			addToIndex(comments);
+		}
+	}
+	pub.export(createIndex);
+
+	//TODO: make this async?
+	function addToIndex(comments) {
+		_.each(comments, function(c) {
+			c.search_id = max_doc_id;
+			index.add({id: max_doc_id, body: c.innerText});
+			max_doc_id += 1;
+		});
+		logger.log("max id: " + max_doc_id);
+	}
+	pub.export(addToIndex);
 
 	return pub;
 });

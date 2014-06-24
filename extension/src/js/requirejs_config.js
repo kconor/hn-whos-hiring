@@ -11,6 +11,7 @@ var requirejs_config = {
 		jquery: "/js/lib/jquery-2.1.1",
 		underscore: "/js/lib/underscore",
 		jasmine: "/js/lib/jasmine",
+		lunr: "/js/lib/lunr",
 		tests: "/js/tests",
 		text: "/js/lib/text",
   },

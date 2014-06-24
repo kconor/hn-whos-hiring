@@ -29,12 +29,14 @@ function( _,
 
 	// setup form at top
 	search.addForm();
-	com.incrLoadMoreCount(comments.length);
+	load.updateLoadMoreCount(comments.length);
+
+	search.createIndex(comments);
 
 	/* Single page viewing of the paginated comments.
 	 * WARNING: repeatedly reloading the extension with 
 	 * this enabled is a good way to get banned by the
 	 * rate limiter. */
-	com.loadMoreComments(document, more_link);
+	load.loadMoreComments(document, more_link);
 
 });
