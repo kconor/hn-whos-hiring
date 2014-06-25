@@ -276,7 +276,7 @@ function(_,
 			'lower_level': split[1]
 		};
 	}
-	pub.export(splitCommentsByLevel);//TODO: remove
+	//pub.export(splitCommentsByLevel);//TODO: remove
 
 
 	/* Tests if a DOM element is a comment.

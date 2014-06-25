@@ -3,22 +3,23 @@
 require.config(requirejs_config);
 
 require(["underscore", 
-					//"tests/runner",
+					"tests/runner",
 					"comments",
 					"buttons",
 					"dom_util",
 					"load_more",
 					"search"],
 function( _,
-					//tests,
+					tests,
 					com,
 					btn,
 					dom,
 					load, 
 					search) {
 
-	/* run test suite */
-	//tests.run();
+	/* run test suite on hacker news mock */
+	if (window.location.origin === "http://127.0.0.1:8080")
+		tests.run();
 
 	//save this first, replaceComments() deletes it
 	var more_link = load.findMoreLink(document);
@@ -37,6 +38,6 @@ function( _,
 	 * WARNING: repeatedly reloading the extension with 
 	 * this enabled is a good way to get banned by the
 	 * rate limiter. */
-	load.loadMoreComments(document, more_link);
+	//load.loadMoreComments(document, more_link);
 
 });

@@ -81,11 +81,12 @@ function( _,
 	/* 
 	 * Generate an event listener that shows or hides
 	 * the comments based on an optional search query
-	 * and a status 
+	 * and comment status.  Searching is done on top-
+	 * level comments only.
 	 * 
 	 * @returns {object} a search function
 	 */
-	function genListener() {
+	function genSearchListener() {
 		var status_select = document.getElementById("wh-filter-by-status");
 		var filter = document.getElementById('wh-text-filter');
 
@@ -129,19 +130,17 @@ function( _,
 	}
 
 	/*
-	 * Adds the tools at the top of the post for filtering comments
+	 * Adds the tools at the top of the post for filtering comments.
 	 */
 	function addForm() {
 		if (document.getElementById("wh-header") === null) {
 			var table = com.getPostTable();
 			table.insertAdjacentHTML('afterend', header_html);
-			/* add full text search and status filtering to comments.
-			 * filter on search term submit or status select change.
-			 * searches only top-level comments (the job posts). */
 			var form = document.getElementById('wh-form');
 			var status_select = document.getElementById("wh-filter-by-status");
-			var listener = genListener();
-			form.addEventListener('submit', listener);
+			var listener = genSearchListener();
+			form.addEventListener('keyup', listener);
+			form.addEventListener('submit', function(e) { e.preventDefault(); });
 			status_select.addEventListener('change', listener);
 		}
 	}

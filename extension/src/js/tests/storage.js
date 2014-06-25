@@ -3,7 +3,7 @@
 define(["storage"], function(db) {
 
 	function buildSuite(j /*jasmine interface*/) {
-		j.describe("Storage API tests", function() {
+		j.describe("Storage API", function() {
 			var link_id = 'badbeef'; //will not collide with actual link id's
 			var attr = 'feebdab';
 			var key = link_id + attr;

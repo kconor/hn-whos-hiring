@@ -1,7 +1,15 @@
 /* jshint -W097 */
 "use strict";
-define(["./boot", "./comments", "./storage", "./ui"],
-function(  boot,     comments,     db,          ui) {
+define(["./boot",
+				"./comments",
+				"./storage",
+				"./ui",
+				"./buttons"],
+function( boot,
+					comments,
+					db,
+					ui,
+					btn) {
 
 	function run() {
 		/* TODO
@@ -9,6 +17,7 @@ function(  boot,     comments,     db,          ui) {
 		 * specs are added to something to be run... */
 		comments.buildSuite(boot.jasmineInterface);
 		db.buildSuite(boot.jasmineInterface);
+		btn.buildSuite(boot.jasmineInterface);
 		//ui.buildSuite(boot.jasmineInterface);
 		boot.env.execute();
 	}

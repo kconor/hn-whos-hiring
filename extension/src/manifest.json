@@ -9,6 +9,7 @@
 		"storage",
 		"http://news.ycombinator.com/",
 		"https://news.ycombinator.com/",
+		"http://localhost/*",
 		"tabs",
 		"activeTab",
 		"unlimitedStorage",

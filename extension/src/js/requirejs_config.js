@@ -14,6 +14,7 @@ var requirejs_config = {
 		lunr: "/js/lib/lunr",
 		tests: "/js/tests",
 		text: "/js/lib/text",
+		config: "/js/config"
   },
 	config: {
 		text: {

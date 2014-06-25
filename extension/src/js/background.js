@@ -11,7 +11,15 @@ chrome.runtime.onInstalled.addListener(function() {
       {
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { urlContains: 'news.ycombinator.com' },
+						pageUrl: { urlContains: '127.0.0.1:8080' },
+          }),
+        ],
+        actions: [ new chrome.declarativeContent.ShowPageAction() ]
+      },
+      {
+        conditions: [
+          new chrome.declarativeContent.PageStateMatcher({
+            pageUrl: { hostEquals: 'news.ycombinator.com' },
           })
         ],
         actions: [ new chrome.declarativeContent.ShowPageAction() ]
